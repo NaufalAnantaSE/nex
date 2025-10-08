@@ -8,12 +8,28 @@ jobs:
   run-nexus:
     runs-on: ubuntu-latest
     steps:
-      - name: Install dependencies
+      - name: Install Nexus CLI
         run: |
           sudo apt update
           sudo apt install -y curl
           curl https://cli.nexus.xyz/ | sh
-          source ~/.bashrc
-      - name: Start node
+          
+      - name: Start Nexus node
         run: |
-          nexus-network start --node-id 6328801
+          # Try multiple possible installation paths
+          if [ -f "$HOME/.nexus/nexus-network" ]; then
+            NEXUS_PATH="$HOME/.nexus/nexus-network"
+          elif [ -f "/usr/local/bin/nexus-network" ]; then
+            NEXUS_PATH="/usr/local/bin/nexus-network"
+          elif command -v nexus-network &> /dev/null; then
+            NEXUS_PATH="nexus-network"
+          else
+            echo "Searching for nexus-network..."
+            find $HOME -name "nexus-network" -type f 2>/dev/null || true
+            find /usr -name "nexus-network" -type f 2>/dev/null || true
+            exit 1
+          fi
+          
+          echo "Found Nexus at: $NEXUS_PATH"
+          $NEXUS_PATH start --node-id 6328801
+        shell: bash

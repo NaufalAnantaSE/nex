@@ -13,9 +13,10 @@ jobs:
           sudo apt update
           sudo apt install -y curl
           curl https://cli.nexus.xyz/ | sh
-          source ~/.bashrc
+          
           
       - name: Start Nexus node
         run: |
-         nexus-network start --node-id 6328801
+          source ~/.bashrc
+           nexus-network start --node-id 6328801
         shell: bash

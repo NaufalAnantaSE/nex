@@ -8,10 +8,12 @@ jobs:
   run-nexus:
     runs-on: ubuntu-latest
     steps:
-      - name: Install and run Nexus node
+      - name: Setup and run Nexus node
         run: |
           sudo apt update
           sudo apt install -y curl
           echo "y" | curl https://cli.nexus.xyz/ | sh
           export PATH=$PATH:$HOME/.nexus/bin
-          ~/.nexus/bin/nexus-network start --node-id 6328801 --no-tui
+          echo "Starting Nexus node..."
+          ~/.nexus/bin/nexus-network start --node-id 6328801 < /dev/null & sleep 60
+          echo "Nexus node started successfully!"

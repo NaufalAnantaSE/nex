@@ -1,0 +1,19 @@
+name: Run Nexus Testnet Node
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+jobs:
+  run-nexus:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y curl
+          curl https://cli.nexus.xyz/ | sh
+          source ~/.bashrc
+      - name: Start node
+        run: |
+          nexus-network start --node-id 6328801

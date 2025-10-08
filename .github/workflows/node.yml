@@ -1,7 +1,7 @@
 name: Run Nexus Testnet Node
 on:
   schedule:
-    - cron: "0 */6 * * *"  # otomatis jalan tiap 6 jam
+    - cron: "0 */6 * * *"  # jalan tiap 6 jam
   workflow_dispatch:
 
 jobs:
@@ -12,6 +12,6 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y curl
-          curl https://cli.nexus.xyz/ | sh
-          source ~/.bashrc
-          ~/.nexus/bin/nexus-network start --node-id 6328801
+          echo "y" | curl https://cli.nexus.xyz/ | sh
+          export PATH=$PATH:$HOME/.nexus/bin
+          ~/.nexus/bin/nexus-network start --node-id 6328801 --no-tui
